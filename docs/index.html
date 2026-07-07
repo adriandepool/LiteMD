@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiteMD — Editor y Lector de Markdown Premium</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <img src="assets/logo.png" alt="LiteMD Logo" class="nav-logo">
+        <span class="brand-name">LiteMD</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#features">Características</a>
+        <a href="#showcase">Demo</a>
+        <a href="https://github.com/adriandepool/LiteMD" class="github-link" target="_blank">
+          <i data-lucide="github"></i> GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="badge">Versión 0.2.3 ya disponible</div>
+        <h1 class="hero-title">El editor y lector de Markdown <span class="gradient-text">más elegante</span>.</h1>
+        <p class="hero-subtitle">Ligero, rápido y diseñado con la estética sofisticada de macOS. Escribe sin distracciones, formatea en tiempo real y exporta con calidad editorial.</p>
+        
+        <div class="cta-group">
+          <a href="https://github.com/adriandepool/LiteMD/releases/latest/download/LiteMD_0.2.3_x64-setup.exe" class="btn btn-primary download-btn">
+            <i data-lucide="download"></i> Descargar para Windows
+          </a>
+          <a href="#showcase" class="btn btn-secondary">
+            Ver Demo
+          </a>
+        </div>
+        <span class="download-caption">Instalador nativo seguro x64 (.exe) • 8.5 MB</span>
+      </div>
+
+      <!-- App Mockup Overlay -->
+      <div class="hero-mockup" id="showcase">
+        <div class="mockup-frame">
+          <div class="mockup-titlebar">
+            <div class="mockup-lights">
+              <span class="light red"></span>
+              <span class="light yellow"></span>
+              <span class="light green"></span>
+            </div>
+            <span class="mockup-title">documento.md — LiteMD</span>
+            <div class="mockup-controls"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-editor">
+              <span class="line"><span class="token-h"># Introducción a LiteMD</span></span>
+              <span class="line"></span>
+              <span class="line">**LiteMD** es el editor de Markdown premium que estabas esperando.</span>
+              <span class="line"></span>
+              <span class="line">- **Estilo macOS:** Interfaz limpia con paneles de cristal esmerilado.</span>
+              <span class="line">- **WYSIWYG y Dividido:** Edita visualmente o en texto plano.</span>
+              <span class="line">- **Exportación:** Genera PDFs e HTML con formato editorial.</span>
+              <span class="line"></span>
+              <span class="line">```javascript</span>
+              <span class="line"><span class="token-code">const app = "LiteMD";</span></span>
+              <span class="line"><span class="token-code">console.log(`Escribiendo en ${app}!`);</span></span>
+              <span class="line">```</span>
+            </div>
+            <div class="mockup-preview">
+              <h1>Introducción a LiteMD</h1>
+              <p><strong>LiteMD</strong> es el editor de Markdown premium que estabas esperando.</p>
+              <ul>
+                <li><strong>Estilo macOS:</strong> Interfaz limpia con paneles de cristal esmerilado.</li>
+                <li><strong>WYSIWYG y Dividido:</strong> Edita visualmente o en texto plano.</li>
+                <li><strong>Exportación:</strong> Genera PDFs e HTML con formato editorial.</li>
+              </ul>
+              <pre><code>const app = "LiteMD";
+console.log(`Escribiendo en ${app}!`);</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="features">
+    <div class="section-container">
+      <div class="section-header">
+        <h2 class="section-title">Diseñado para la excelencia</h2>
+        <p class="section-subtitle">LiteMD combina la velocidad de una aplicación nativa con el formateo enriquecido en tiempo real.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="edit-3"></i></div>
+          <h3 class="feature-title">Editor Doble Modo</h3>
+          <p class="feature-text">Escribe en modo WYSIWYG interactivo Notion-style o en texto plano Markdown clásico con vista dividida en tiempo real.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="refresh-cw"></i></div>
+          <h3 class="feature-title">Scroll Sincronizado</h3>
+          <p class="feature-text">Desplázate de manera bidireccional y fluida. La previsualización de tu documento se mantiene alineada con el editor a 60fps.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="file-down"></i></div>
+          <h3 class="feature-title">Drag & Drop Directo</h3>
+          <p class="feature-text">Arrastra cualquier archivo `.md` o `.txt` sobre la ventana para abrirlo al instante con un elegante overlay desenfocado.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="save"></i></div>
+          <h3 class="feature-title">Autoguardado Opcional</h3>
+          <p class="feature-text">Activa el guardado automático de fondo. Tu progreso se asegura en segundo plano mostrando el estado en la barra superior.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="copy"></i></div>
+          <h3 class="feature-title">Copiado en Bloques de Código</h3>
+          <p class="feature-text">Copia rápidamente los bloques de código formateados al portapapeles con un botón flotante y animación interactiva.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="file-code"></i></div>
+          <h3 class="feature-title">Exportación Editorial</h3>
+          <p class="feature-text">Exporta tus documentos a PDF, HTML premium con hojas de estilo pulidas o texto plano con un solo clic.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section / Footer -->
+  <section class="download-section">
+    <div class="download-container-inner">
+      <img src="assets/logo.png" alt="LiteMD Logo" class="download-logo">
+      <h2>Empieza a escribir hoy mismo en LiteMD</h2>
+      <p>Lleva tu redacción de notas y documentación al siguiente nivel con el editor de Markdown más fluido para Windows.</p>
+      <a href="https://github.com/adriandepool/LiteMD/releases/latest/download/LiteMD_0.2.3_x64-setup.exe" class="btn btn-primary download-btn-large">
+        <i data-lucide="download"></i> Descargar para Windows
+      </a>
+      <span class="version-lbl">LiteMD v0.2.3 • Licencia Abierta • Construido con Tauri & Rust</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 LiteMD. Desarrollado por Adrian Reyes. Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="https://github.com/adriandepool/LiteMD" target="_blank">Repositorio de GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

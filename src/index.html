@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Editor & Reader</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="lib/prism-tomorrow.min.css" />
+    <!-- Scripts -->
+    <script src="lib/lucide.min.js" defer></script>
+    <script src="lib/marked.umd.js" defer></script>
+    <script src="lib/turndown.js" defer></script>
+    <script src="lib/prism.js" defer></script>
+    <script src="main.js" type="module" defer></script>
+  </head>
+  <body class="light-theme">
+    <!-- Drag & Drop Overlay -->
+    <div id="drag-drop-overlay" class="hidden">
+      <div class="overlay-content">
+        <i data-lucide="file-down"></i>
+        <p>Soltar para abrir archivo</p>
+      </div>
+    </div>
+
+    <!-- Custom macOS Titlebar with Windows-style Window Controls -->
+    <header id="titlebar" data-tauri-drag-region>
+      <!-- Left side: Sidebar Toggle -->
+      <button class="toolbar-btn" id="toggle-sidebar-btn" title="Mostrar/Ocultar barra lateral">
+        <i data-lucide="sidebar"></i>
+      </button>
+
+      <!-- Document Info (centered) -->
+      <div class="document-info" data-tauri-drag-region>
+        <div class="title-row" data-tauri-drag-region>
+          <span id="doc-title" data-tauri-drag-region>Sin Título</span>
+          <span id="unsaved-indicator" class="hidden"></span>
+        </div>
+        <span id="save-status" class="save-status-idle"></span>
+      </div>
+
+      <!-- View Selector (macOS Segmented Control) -->
+      <div class="view-selector">
+        <button class="view-btn active" id="view-editor" data-view="editor" title="Modo Editor">
+          <i data-lucide="edit-3"></i>
+          <span>Editor</span>
+        </button>
+        <button class="view-btn" id="view-split" data-view="split" title="Vista Dividida">
+          <i data-lucide="columns"></i>
+          <span>Dividido</span>
+        </button>
+        <button class="view-btn" id="view-reader" data-view="reader" title="Modo Lector">
+          <i data-lucide="book-open"></i>
+          <span>Lector</span>
+        </button>
+      </div>
+
+      <!-- Right side: Window Controls (Windows order & style) -->
+      <div class="win-controls">
+        <button class="win-control minimize" id="win-minimize" title="Minimizar">
+          <svg viewBox="0 0 12 12"><path d="M2,6 L10,6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+        </button>
+        <button class="win-control maximize" id="win-maximize" title="Maximizar">
+          <svg viewBox="0 0 12 12"><path d="M3,3 L9,3 L9,9 L3,9 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+        </button>
+        <button class="win-control close" id="win-close" title="Cerrar">
+          <svg viewBox="0 0 12 12"><path d="M8.5,3.5 L3.5,8.5 M3.5,3.5 L8.5,8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main App Container -->
+    <div id="app-container">
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-section">
+          <button class="sidebar-action-btn" id="new-file-btn">
+            <i data-lucide="file-plus"></i>
+            <span>Nuevo Archivo</span>
+          </button>
+          <button class="sidebar-action-btn" id="open-file-btn">
+            <i data-lucide="folder-open"></i>
+            <span>Abrir Archivo</span>
+          </button>
+          <button class="sidebar-action-btn" id="save-file-btn">
+            <i data-lucide="save"></i>
+            <span>Guardar</span>
+          </button>
+          <button class="sidebar-action-btn" id="save-as-btn">
+            <i data-lucide="download"></i>
+            <span>Guardar Como</span>
+          </button>
+          <button class="sidebar-action-btn" id="export-pdf-btn">
+            <i data-lucide="file-text"></i>
+            <span>Exportar PDF</span>
+          </button>
+          <button class="sidebar-action-btn" id="export-html-btn">
+            <i data-lucide="file-code"></i>
+            <span>Exportar HTML</span>
+          </button>
+          <button class="sidebar-action-btn" id="export-txt-btn">
+            <i data-lucide="align-left"></i>
+            <span>Exportar Texto Plano</span>
+          </button>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section files-section">
+          <h3>Recientes</h3>
+          <ul id="recent-files-list">
+            <!-- Dynamically populated -->
+            <li class="empty-list">No hay archivos recientes</li>
+          </ul>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+          <div class="footer-controls">
+            <button class="icon-only-btn" id="theme-toggle-btn" title="Cambiar Tema (Claro/Oscuro)">
+              <i data-lucide="sun" id="theme-icon"></i>
+            </button>
+            <div class="dropdown-container">
+              <button class="icon-only-btn" id="font-select-btn" title="Cambiar Fuente">
+                <i data-lucide="type"></i>
+              </button>
+              <div class="dropdown-menu hidden" id="font-dropdown-menu">
+                <button class="dropdown-item" data-font="sans">Inter (Sans-serif)</button>
+                <button class="dropdown-item" data-font="serif">Lora (Serif)</button>
+                <button class="dropdown-item" data-font="mono">Fira Code (Monospace)</button>
+              </div>
+            </div>
+            <div class="autosave-container" title="Activar/Desactivar Autoguardado Opcional">
+              <label class="switch">
+                <input type="checkbox" id="autosave-toggle">
+                <span class="slider round"></span>
+              </label>
+              <span class="autosave-label">Auto</span>
+            </div>
+          </div>
+          <span class="app-version">v1.0.0</span>
+        </div>
+      </aside>
+
+      <!-- Editor & Preview Panels Container -->
+      <main id="editor-preview-container" class="view-editor">
+        <section id="editor-pane">
+          <div class="editor-toolbar">
+            <button class="toolbar-tool-btn" id="btn-bold" title="Negrita (Ctrl+B)">
+              <i data-lucide="bold"></i>
+            </button>
+            <button class="toolbar-tool-btn" id="btn-italic" title="Itálica (Ctrl+I)">
+              <i data-lucide="italic"></i>
+            </button>
+            <button class="toolbar-tool-btn" id="btn-underline" title="Subrayado (Ctrl+U)">
+              <i data-lucide="underline"></i>
+            </button>
+            <span class="toolbar-divider"></span>
+            <button class="toolbar-tool-btn format-btn" id="btn-h1" title="Título 1 (Ctrl+1)">H1</button>
+            <button class="toolbar-tool-btn format-btn" id="btn-h2" title="Título 2 (Ctrl+2)">H2</button>
+            <button class="toolbar-tool-btn format-btn" id="btn-h3" title="Título 3 (Ctrl+3)">H3</button>
+            <span class="toolbar-divider"></span>
+            <button class="toolbar-tool-btn" id="btn-ul" title="Lista de viñetas">
+              <i data-lucide="list"></i>
+            </button>
+            <button class="toolbar-tool-btn" id="btn-ol" title="Lista numerada">
+              <i data-lucide="list-ordered"></i>
+            </button>
+            <button class="toolbar-tool-btn" id="btn-quote" title="Cita (Blockquote)">
+              <i data-lucide="quote"></i>
+            </button>
+          </div>
+          <div id="markdown-editor" contenteditable="true" class="markdown-body" placeholder="Escribe tu Markdown aquí..."></div>
+          <div class="editor-status-bar">
+            <span id="word-count">0 palabras</span>
+            <span id="line-count">1 línea</span>
+          </div>
+        </section>
+
+        <!-- Split Divider (Visible in split mode) -->
+        <div id="split-divider"></div>
+
+        <!-- Preview Panel -->
+        <section id="preview-pane" class="markdown-body">
+          <div id="markdown-preview"></div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
