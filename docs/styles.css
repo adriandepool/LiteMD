@@ -249,30 +249,77 @@ body {
   justify-content: space-between;
 }
 
-.mockup-lights {
+.mockup-left {
   display: flex;
-  gap: 8px;
+  align-items: center;
 }
 
-.mockup-lights .light {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+.mockup-sidebar-btn {
+  color: #a1a1a6;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.mockup-sidebar-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mockup-win-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mockup-win-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  border: 1px solid #a1a1a6;
   display: inline-block;
+  position: relative;
+  opacity: 0.8;
 }
 
-.mockup-lights .light.red { background-color: #ff5f56; }
-.mockup-lights .light.yellow { background-color: #ffbd2e; }
-.mockup-lights .light.green { background-color: #27c93f; }
+.mockup-win-btn.minimize {
+  border: none;
+  border-bottom: 1.5px solid #a1a1a6;
+  width: 10px;
+  height: 5px;
+  top: -2px;
+}
+
+.mockup-win-btn.maximize {
+  width: 9px;
+  height: 9px;
+}
+
+.mockup-win-btn.close {
+  border: none;
+  width: 10px;
+  height: 10px;
+}
+
+.mockup-win-btn.close::before, .mockup-win-btn.close::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 10px;
+  height: 1.5px;
+  background-color: #a1a1a6;
+  transform: rotate(45deg);
+}
+
+.mockup-win-btn.close::after {
+  transform: rotate(-45deg);
+}
 
 .mockup-title {
   font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
-}
-
-.mockup-controls {
-  width: 52px;
 }
 
 .mockup-body {
@@ -535,4 +582,101 @@ body {
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* Language switch button */
+.lang-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent);
+}
+
+/* Technology Stack Badges */
+.tech-stack {
+  padding: 60px 24px;
+  background-color: rgba(10, 14, 23, 0.3);
+  border-top: 1px solid var(--border-color);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.tech-container {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.tech-container h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.tech-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.tech-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+  transition: var(--transition);
+  opacity: 0.7;
+}
+
+.tech-logo-link:hover {
+  opacity: 1;
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.tech-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.rust-icon {
+  filter: invert(1); /* Converts black SVG to white */
+}
+
+.tauri-icon {
+  /* Fits beautifully natively */
+}
+
+.tech-github-icon {
+  width: 28px;
+  height: 28px;
+  color: #ffffff;
+}
+
+.tech-logo-link:hover .tech-github-icon {
+  color: var(--accent);
 }
