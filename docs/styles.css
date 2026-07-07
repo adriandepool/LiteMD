@@ -657,26 +657,24 @@ body {
   transform: translateY(-2px);
 }
 
-.tech-icon-img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+.tech-icon-lucide {
+  width: 24px;
+  height: 24px;
+  transition: var(--transition);
 }
 
-.rust-icon {
-  filter: invert(1); /* Converts black SVG to white */
+.rust-color {
+  color: #ff7c43; /* Rust orange */
 }
 
-.tauri-icon {
-  /* Fits beautifully natively */
+.tauri-color {
+  color: #0a84ff; /* Tauri blue */
 }
 
-.tech-github-icon {
-  width: 28px;
-  height: 28px;
-  color: #ffffff;
+.github-color {
+  color: #ffffff; /* GitHub white */
 }
 
-.tech-logo-link:hover .tech-github-icon {
-  color: var(--accent);
+.tech-logo-link:hover .tech-icon-lucide {
+  transform: scale(1.1);
 }
