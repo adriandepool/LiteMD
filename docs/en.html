@@ -463,17 +463,55 @@ console.log("Copied!");</code></pre>
       lucide.createIcons();
     }
 
+    // Auto-rotation Logic
+    const tabKeys = ['wysiwyg', 'scroll', 'dragdrop', 'autosave', 'copy', 'exports'];
+    let currentTabIndex = 0;
+    let autoRotationInterval = null;
+
+    function startAutoRotation() {
+      autoRotationInterval = setInterval(() => {
+        currentTabIndex = (currentTabIndex + 1) % tabKeys.length;
+        const nextTabKey = tabKeys[currentTabIndex];
+        
+        // Update active tab button visually
+        document.querySelectorAll('.demo-tab-btn').forEach(btn => {
+          if (btn.dataset.tab === nextTabKey) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        
+        selectDemoTab(nextTabKey);
+      }, 5000);
+    }
+
+    function stopAutoRotation() {
+      if (autoRotationInterval) {
+        clearInterval(autoRotationInterval);
+        autoRotationInterval = null;
+      }
+    }
+
     // Bind tab clicks
     document.querySelectorAll('.demo-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        // Stop rotating forever once clicked
+        stopAutoRotation();
+        
         document.querySelectorAll('.demo-tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        
+        // Sync index tracker
+        currentTabIndex = tabKeys.indexOf(btn.dataset.tab);
+        
         selectDemoTab(btn.dataset.tab);
       });
     });
 
-    // Load initial tab
+    // Load initial tab and start auto-rotation
     selectDemoTab('wysiwyg');
+    startAutoRotation();
   </script>
 </body>
 </html>

@@ -231,12 +231,7 @@ body {
   border-radius: 16px;
   box-shadow: var(--shadow-premium);
   overflow: hidden;
-  transform: rotateX(5deg);
   transition: var(--transition);
-}
-
-.mockup-frame:hover {
-  transform: rotateX(0deg) translateY(-8px);
 }
 
 .mockup-titlebar {
