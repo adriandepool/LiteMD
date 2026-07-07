@@ -659,15 +659,15 @@ body {
 }
 
 .rust-color {
-  color: #ff7c43; /* Rust orange */
+  color: #ff7c43 !important; /* Rust orange */
 }
 
 .tauri-color {
-  color: #0a84ff; /* Tauri blue */
+  color: #0a84ff !important; /* Tauri blue */
 }
 
 .github-color {
-  color: #ffffff; /* GitHub white */
+  color: #ffffff !important; /* GitHub white */
 }
 
 .tech-logo-link:hover .tech-icon-lucide {
@@ -1256,17 +1256,17 @@ body.light-theme-page .tech-logo-link:hover {
 }
 
 body.light-theme-page .tech-icon-lucide {
-  color: #1d1d1f;
+  color: #1d1d1f !important;
 }
 
 body.light-theme-page .tech-logo-link:hover .tech-icon-lucide {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
 body.light-theme-page .tech-logo-link:hover .tech-icon-lucide.rust-color {
-  color: #ff7c43;
+  color: #ff7c43 !important;
 }
 
 body.light-theme-page .tech-logo-link:hover .tech-icon-lucide.tauri-color {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
