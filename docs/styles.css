@@ -678,3 +678,246 @@ body {
 .tech-logo-link:hover .tech-icon-lucide {
   transform: scale(1.1);
 }
+
+/* Themes Comparison Showcase */
+.theme-showcase {
+  padding: 100px 24px;
+  border-top: 1px solid var(--border-color);
+  background-color: rgba(10, 14, 23, 0.2);
+}
+
+.themes-comparison {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.theme-window {
+  flex: 1;
+  min-width: 280px;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.window-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.mockup-frame-simple {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-premium);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.mockup-frame-simple:hover {
+  transform: translateY(-4px);
+}
+
+.mockup-titlebar-simple {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  justify-content: space-between;
+}
+
+.light-tb {
+  background-color: #f6f6f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark-tb {
+  background-color: #252526;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.m-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+.m-title {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.light-tb .m-title { color: #515154; }
+.dark-tb .m-title { color: #86868b; }
+
+.m-controls {
+  width: 8px;
+}
+
+.mockup-content-simple {
+  padding: 20px;
+  height: 120px;
+  text-align: left;
+}
+
+.light-content {
+  background-color: #ffffff;
+}
+
+.dark-content {
+  background-color: #1e1e1e;
+}
+
+/* Card Examples Styling */
+.card-example {
+  margin-top: 16px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.mini-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mini-pane {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: monospace;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sync-animation {
+  display: flex;
+  justify-content: space-around;
+  height: 38px;
+  align-items: center;
+  position: relative;
+}
+
+.sync-bar {
+  width: 30%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sync-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-gradient);
+  animation: scrollSyncBar 2s infinite ease-in-out;
+}
+
+@keyframes scrollSyncBar {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.dropzone-box {
+  border: 1px dashed rgba(0, 122, 255, 0.3);
+  background-color: rgba(0, 122, 255, 0.04);
+  border-radius: 6px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dropzone-box svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+.autosave-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+}
+
+.status-indicator {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #2ecc71;
+  animation: blinkStatus 1.5s infinite ease-in-out;
+}
+
+@keyframes blinkStatus {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.code-preview {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-family: monospace;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-badge {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-badge svg {
+  width: 8px;
+  height: 8px;
+}
+
+.export-badges {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  height: 38px;
+  align-items: center;
+}
+
+.badge-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-tag.pdf { background-color: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+.badge-tag.html { background-color: rgba(0, 122, 255, 0.15); color: #007aff; }
+.badge-tag.txt { background-color: rgba(241, 196, 15, 0.15); color: #f1c40f; }
