@@ -18,6 +18,7 @@ const editorPreviewContainer = document.getElementById('editor-preview-container
 
 // View Buttons
 const viewEditor = document.getElementById('view-editor');
+const viewRaw = document.getElementById('view-raw');
 const viewSplit = document.getElementById('view-split');
 const viewReader = document.getElementById('view-reader');
 
@@ -56,6 +57,9 @@ const btnQuote = document.getElementById('btn-quote');
 // Footer Elements
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const themeIcon = document.getElementById('theme-icon');
+const helpBtn = document.getElementById('help-btn');
+const closeHelpBtn = document.getElementById('close-help-btn');
+const helpDrawer = document.getElementById('help-drawer');
 const wordCount = document.getElementById('word-count');
 const lineCount = document.getElementById('line-count');
 
@@ -112,7 +116,7 @@ function getMarkdownContent() {
 }
 
 // View Mode Selector Setup
-const viewButtons = [viewEditor, viewSplit, viewReader];
+const viewButtons = [viewEditor, viewRaw, viewSplit, viewReader];
 viewButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     viewButtons.forEach(b => b.classList.remove('active'));
@@ -121,8 +125,8 @@ viewButtons.forEach(btn => {
     const viewMode = btn.dataset.view;
     
     // Transition Editor State based on active mode (BEFORE updating container class to avoid display: none innerText bug)
-    if (viewMode === 'split') {
-      // Transition to RAW MARKDOWN mode (for split editing)
+    if (viewMode === 'split' || viewMode === 'raw') {
+      // Transition to RAW MARKDOWN mode (for split or pure raw editing)
       if (!isRawMode) {
         const markdownText = turndownService.turndown(editor.innerHTML);
         editor.innerText = markdownText;
@@ -189,6 +193,15 @@ themeToggleBtn.addEventListener('click', () => {
     themeIcon.setAttribute('data-lucide', 'sun');
   }
   window.lucide.createIcons();
+});
+
+// Help Drawer Toggle
+helpBtn.addEventListener('click', () => {
+  helpDrawer.classList.toggle('hidden');
+});
+
+closeHelpBtn.addEventListener('click', () => {
+  helpDrawer.classList.add('hidden');
 });
 
 // Editor Helper: Update Word & Line Counts

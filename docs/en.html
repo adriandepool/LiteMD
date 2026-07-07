@@ -147,6 +147,13 @@ console.log(`Writing in ${app}!`);</code></pre>
               <p>Notion-style rich text editing or raw Markdown text side-by-side in real-time.</p>
             </div>
           </button>
+          <button class="demo-tab-btn" data-tab="raw">
+            <div class="tab-icon"><i data-lucide="code"></i></div>
+            <div class="tab-info">
+              <h4>Pure Markdown</h4>
+              <p>Classic full-screen plain-text editing optimized for raw composition and concentration.</p>
+            </div>
+          </button>
           <button class="demo-tab-btn" data-tab="scroll">
             <div class="tab-icon"><i data-lucide="refresh-cw"></i></div>
             <div class="tab-info">
@@ -291,6 +298,23 @@ console.log(`Writing in ${app}!`);</code></pre>
                 <li>Instant rich formatting shortcuts.</li>
                 <li>Side-by-side real-time rendering.</li>
               </ul>
+            </div>
+          </div>
+        `
+      },
+      raw: {
+        title: "document.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body">
+            <div class="mockup-editor" style="width: 100%;">
+              <span class="line"><span class="token-h"># Pure Markdown</span></span>
+              <span class="line"></span>
+              <span class="line">This is the pure **plain-text editing** mode of LiteMD.</span>
+              <span class="line"></span>
+              <span class="line">- Hides the live preview panel for absolute focus.</span>
+              <span class="line">- Minimalist and fast text editor centered on your copy.</span>
+              <span class="line">- Native keyboard shortcuts to structure your notes quickly.</span>
             </div>
           </div>
         `
@@ -464,7 +488,7 @@ console.log("Copied!");</code></pre>
     }
 
     // Auto-rotation Logic
-    const tabKeys = ['wysiwyg', 'scroll', 'dragdrop', 'autosave', 'copy', 'exports'];
+    const tabKeys = ['wysiwyg', 'raw', 'scroll', 'dragdrop', 'autosave', 'copy', 'exports'];
     let currentTabIndex = 0;
     let autoRotationInterval = null;
 

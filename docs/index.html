@@ -144,6 +144,13 @@ console.log(`Escribiendo en ${app}!`);</code></pre>
               <p>Edición visual Notion-style o texto Markdown con vista previa simultánea en tiempo real.</p>
             </div>
           </button>
+          <button class="demo-tab-btn" data-tab="raw">
+            <div class="tab-icon"><i data-lucide="code"></i></div>
+            <div class="tab-info">
+              <h4>Markdown Puro</h4>
+              <p>Edición clásica en texto plano a pantalla completa, optimizada para redactar con máxima concentración.</p>
+            </div>
+          </button>
           <button class="demo-tab-btn" data-tab="scroll">
             <div class="tab-icon"><i data-lucide="refresh-cw"></i></div>
             <div class="tab-info">
@@ -288,6 +295,23 @@ console.log(`Escribiendo en ${app}!`);</code></pre>
                 <li>Formateo enriquecido instantáneo.</li>
                 <li>Edición lado a lado en tiempo real.</li>
               </ul>
+            </div>
+          </div>
+        `
+      },
+      raw: {
+        title: "documento.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body">
+            <div class="mockup-editor" style="width: 100%;">
+              <span class="line"><span class="token-h"># Markdown Puro</span></span>
+              <span class="line"></span>
+              <span class="line">Este es el modo de **edición en texto plano** puro de LiteMD.</span>
+              <span class="line"></span>
+              <span class="line">- Oculta la vista previa para una concentración máxima.</span>
+              <span class="line">- Editor de texto rápido y minimalista enfocado en tu contenido.</span>
+              <span class="line">- Atajos nativos de teclado para estructurar tus apuntes.</span>
             </div>
           </div>
         `
@@ -458,7 +482,7 @@ console.log("Copiado!");</code></pre>
     }
 
     // Auto-rotation Logic
-    const tabKeys = ['wysiwyg', 'scroll', 'dragdrop', 'autosave', 'copy', 'exports'];
+    const tabKeys = ['wysiwyg', 'raw', 'scroll', 'dragdrop', 'autosave', 'copy', 'exports'];
     let currentTabIndex = 0;
     let autoRotationInterval = null;
 

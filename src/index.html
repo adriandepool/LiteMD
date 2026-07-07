@@ -45,6 +45,10 @@
           <i data-lucide="edit-3"></i>
           <span>Editor</span>
         </button>
+        <button class="view-btn" id="view-raw" data-view="raw" title="Markdown Puro">
+          <i data-lucide="code"></i>
+          <span>Puro</span>
+        </button>
         <button class="view-btn" id="view-split" data-view="split" title="Vista Dividida">
           <i data-lucide="columns"></i>
           <span>Dividido</span>
@@ -120,6 +124,9 @@
             <button class="icon-only-btn" id="theme-toggle-btn" title="Cambiar Tema (Claro/Oscuro)">
               <i data-lucide="sun" id="theme-icon"></i>
             </button>
+            <button class="icon-only-btn" id="help-btn" title="Ayuda de Sintaxis Markdown">
+              <i data-lucide="help-circle"></i>
+            </button>
             <div class="dropdown-container">
               <button class="icon-only-btn" id="font-select-btn" title="Cambiar Fuente">
                 <i data-lucide="type"></i>
@@ -184,6 +191,56 @@
         <section id="preview-pane" class="markdown-body">
           <div id="markdown-preview"></div>
         </section>
+
+        <!-- Dynamic help drawer -->
+        <div id="help-drawer" class="help-drawer hidden">
+          <div class="help-drawer-header">
+            <h3>Guía de Markdown</h3>
+            <button id="close-help-btn" class="icon-only-btn" title="Cerrar"><i data-lucide="x"></i></button>
+          </div>
+          <div class="help-drawer-body">
+            <div class="help-item">
+              <strong># Título 1</strong>
+              <span>Título Principal</span>
+            </div>
+            <div class="help-item">
+              <strong>## Título 2</strong>
+              <span>Subtítulo</span>
+            </div>
+            <div class="help-item">
+              <strong>**Negrita**</strong>
+              <span>Texto resaltado</span>
+            </div>
+            <div class="help-item">
+              <strong>*Cursiva*</strong>
+              <span>Texto inclinado</span>
+            </div>
+            <div class="help-item">
+              <strong>[Enlace](url)</strong>
+              <span>Enlace hipertexto</span>
+            </div>
+            <div class="help-item">
+              <strong>- Elemento</strong>
+              <span>Lista con viñetas</span>
+            </div>
+            <div class="help-item">
+              <strong>1. Elemento</strong>
+              <span>Lista numerada</span>
+            </div>
+            <div class="help-item">
+              <strong>&gt; Cita</strong>
+              <span>Bloque de texto citado</span>
+            </div>
+            <div class="help-item">
+              <strong>\`Código\`</strong>
+              <span>Código en línea</span>
+            </div>
+            <div class="help-item">
+              <strong>\`\`\`javascript<br>código<br>\`\`\`</strong>
+              <span>Bloque de código</span>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </body>
