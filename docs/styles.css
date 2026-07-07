@@ -921,3 +921,357 @@ body {
 .badge-tag.pdf { background-color: rgba(231, 76, 60, 0.15); color: #e74c3c; }
 .badge-tag.html { background-color: rgba(0, 122, 255, 0.15); color: #007aff; }
 .badge-tag.txt { background-color: rgba(241, 196, 15, 0.15); color: #f1c40f; }
+
+/* Interactive Demo Showcase */
+.interactive-showcase {
+  padding: 100px 24px;
+  background-color: rgba(10, 14, 23, 0.4);
+  border-top: 1px solid var(--border-color);
+}
+
+body.light-theme-page .interactive-showcase {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 48px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.demo-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.demo-tab-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  gap: 16px;
+  color: var(--text-primary);
+}
+
+.demo-tab-btn.active {
+  border-color: var(--accent);
+  background-color: rgba(0, 122, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.05);
+}
+
+.demo-tab-btn:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.light-theme-page .demo-tab-btn:hover:not(.active) {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.tab-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgba(0, 122, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.demo-tab-btn.active .tab-icon {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.tab-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.tab-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Mockup elements for interactive tabs */
+.mockup-drag-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 5;
+  color: #ffffff;
+}
+
+.mockup-drag-overlay svg {
+  width: 32px;
+  height: 32px;
+  color: var(--accent);
+  animation: floatOverlay 2s ease-in-out infinite;
+}
+
+.mockup-code-wrapper {
+  position: relative;
+  height: 100%;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+body.light-theme-page .mockup-code-wrapper {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.mockup-copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1a6;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+body.light-theme-page .mockup-copy-btn {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mockup-copy-btn.copied {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border-color: #2ecc71;
+}
+
+.mockup-export-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.export-dialog {
+  background: #252526;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-premium);
+}
+
+body.light-theme-page .export-dialog {
+  background: #ffffff;
+}
+
+.export-dialog h4 {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.export-opt {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 11px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+body.light-theme-page .export-opt {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.export-opt:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Auto-scroll Animation for scroll sync mockup tab */
+.scroll-editor-box, .scroll-preview-box {
+  animation: scrollMock 8s infinite alternate ease-in-out;
+}
+
+@keyframes scrollMock {
+  0%, 10% { transform: translateY(0); }
+  90%, 100% { transform: translateY(-40px); }
+}
+
+/* Theme Toggle Button */
+.nav-theme-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  padding: 6px;
+}
+
+.nav-theme-btn:hover {
+  color: var(--text-primary);
+}
+
+.nav-theme-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Mockup Center & Save Badge */
+.mockup-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mockup-save-badge {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.mockup-save-badge.save-status-editing {
+  color: var(--text-secondary);
+}
+
+.mockup-save-badge.save-status-saving {
+  color: var(--accent);
+}
+
+.mockup-save-badge.save-status-saved {
+  color: #2ecc71;
+}
+
+/* Light / Dark Mode Page Variable Variables */
+body.light-theme-page {
+  --bg-dark: #f5f5f7;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #007aff;
+  --bg-navbar: rgba(245, 245, 247, 0.7);
+}
+
+body.light-theme-page .navbar {
+  background-color: var(--bg-navbar);
+}
+
+body.light-theme-page .mockup-frame {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme-page .mockup-titlebar {
+  background: #f6f6f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme-page .mockup-editor {
+  background: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  color: #333333;
+}
+
+body.light-theme-page .mockup-preview {
+  background: #ffffff;
+  color: #1d1d1f;
+}
+
+body.light-theme-page .mockup-title {
+  color: #1d1d1f;
+}
+
+body.light-theme-page .mockup-sidebar-btn,
+body.light-theme-page .mockup-win-btn {
+  color: #515154;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme-page .mockup-win-btn.close::before,
+body.light-theme-page .mockup-win-btn.close::after {
+  background-color: #515154;
+}
+
+body.light-theme-page .mockup-win-btn.minimize {
+  border-bottom: 1.5px solid #515154;
+}
+
+body.light-theme-page .tech-logo-link {
+  color: var(--text-primary);
+}
+
+body.light-theme-page .tech-logo-link:hover {
+  color: var(--accent);
+}
+
+body.light-theme-page .tech-icon-lucide {
+  color: #1d1d1f;
+}
+
+body.light-theme-page .tech-logo-link:hover .tech-icon-lucide {
+  color: var(--accent);
+}
+
+body.light-theme-page .tech-logo-link:hover .tech-icon-lucide.rust-color {
+  color: #ff7c43;
+}
+
+body.light-theme-page .tech-logo-link:hover .tech-icon-lucide.tauri-color {
+  color: var(--accent);
+}

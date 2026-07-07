@@ -32,11 +32,13 @@
       </div>
       <nav class="nav-links">
         <a href="#features">Features</a>
-        <a href="#themes">Themes</a>
-        <a href="#showcase">Demo</a>
+        <a href="#demo">Interactive Demo</a>
         <a href="https://github.com/adriandepool/LiteMD" target="_blank" class="github-link">
           <i data-lucide="github"></i> Repository
         </a>
+        <button id="theme-toggle" class="nav-theme-btn" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-toggle-icon"></i>
+        </button>
         <a href="index.html" class="lang-btn" title="Cambiar a Español">ES</a>
       </nav>
     </div>
@@ -54,52 +56,11 @@
           <a href="https://github.com/adriandepool/LiteMD/releases/latest/download/LiteMD_0.2.3_x64-setup.exe" class="btn btn-primary download-btn">
             <i data-lucide="download"></i> Download for Windows
           </a>
+          <a href="#demo" class="btn btn-secondary">
+            See Features in Action
+          </a>
         </div>
         <span class="download-caption">Secure native x64 installer (.exe) • 8.5 MB</span>
-      </div>
-
-      <!-- App Mockup Overlay (Actual Windows Style Top-Bar) -->
-      <div class="hero-mockup" id="showcase">
-        <div class="mockup-frame">
-          <div class="mockup-titlebar">
-            <div class="mockup-left">
-              <span class="mockup-sidebar-btn"><i data-lucide="sidebar"></i></span>
-            </div>
-            <span class="mockup-title">documento.md — LiteMD</span>
-            <div class="mockup-win-controls">
-              <span class="mockup-win-btn minimize"></span>
-              <span class="mockup-win-btn maximize"></span>
-              <span class="mockup-win-btn close"></span>
-            </div>
-          </div>
-          <div class="mockup-body">
-            <div class="mockup-editor">
-              <span class="line"><span class="token-h"># Introduction to LiteMD</span></span>
-              <span class="line"></span>
-              <span class="line">**LiteMD** is the premium Markdown editor you've been waiting for.</span>
-              <span class="line"></span>
-              <span class="line">- **Synchronized Scroll:** Smooth side-by-side scrolling.</span>
-              <span class="line">- **WYSIWYG & Split:** Edit visually or in plain text.</span>
-              <span class="line">- **Exporting:** Generate PDFs and HTML with editorial styling.</span>
-              <span class="line"></span>
-              <span class="line">```javascript</span>
-              <span class="line"><span class="token-code">const app = "LiteMD";</span></span>
-              <span class="line"><span class="token-code">console.log(`Writing in ${app}!`);</span></span>
-              <span class="line">```</span>
-            </div>
-            <div class="mockup-preview">
-              <h1>Introduction to LiteMD</h1>
-              <p><strong>LiteMD</strong> is the premium Markdown editor you've been waiting for.</p>
-              <ul>
-                <li><strong>Synchronized Scroll:</strong> Smooth side-by-side scrolling.</li>
-                <li><strong>WYSIWYG & Split:</strong> Edit visually or in plain text.</li>
-                <li><strong>Exporting:</strong> Generate PDFs and HTML with editorial styling.</li>
-              </ul>
-              <pre><code>const app = "LiteMD";
-console.log(`Writing in ${app}!`);</code></pre>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -121,6 +82,87 @@ console.log(`Writing in ${app}!`);</code></pre>
           <i data-lucide="github" class="tech-icon-lucide github-color"></i>
           <span>GitHub</span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo Walkthrough Section -->
+  <section id="demo" class="interactive-showcase">
+    <div class="section-container">
+      <div class="section-header">
+        <h2 class="section-title">Interactive Features Demo</h2>
+        <p class="section-subtitle">Click on each feature on the left to see an exact simulation of the interface and behavior you will find inside the application.</p>
+      </div>
+
+      <div class="demo-grid">
+        <!-- Interactive Tabs Selection List -->
+        <div class="demo-tabs">
+          <button class="demo-tab-btn active" data-tab="wysiwyg">
+            <div class="tab-icon"><i data-lucide="edit-3"></i></div>
+            <div class="tab-info">
+              <h4>Dual-Mode Editor</h4>
+              <p>Notion-style rich text editing or raw Markdown text side-by-side.</p>
+            </div>
+          </button>
+          <button class="demo-tab-btn" data-tab="scroll">
+            <div class="tab-icon"><i data-lucide="refresh-cw"></i></div>
+            <div class="tab-info">
+              <h4>Synchronized Scroll</h4>
+              <p>Bidirectional smooth scroll keeping the editor aligned with the reader.</p>
+            </div>
+          </button>
+          <button class="demo-tab-btn" data-tab="dragdrop">
+            <div class="tab-icon"><i data-lucide="file-down"></i></div>
+            <div class="tab-info">
+              <h4>Drag & Drop</h4>
+              <p>Open `.md` or `.txt` files instantly with a glassmorphic drag overlay.</p>
+            </div>
+          </button>
+          <button class="demo-tab-btn" data-tab="autosave">
+            <div class="tab-icon"><i data-lucide="save"></i></div>
+            <div class="tab-info">
+              <h4>Optional Auto-Save</h4>
+              <p>Saves progress automatically while displaying status badges.</p>
+            </div>
+          </button>
+          <button class="demo-tab-btn" data-tab="copy">
+            <div class="tab-icon"><i data-lucide="copy"></i></div>
+            <div class="tab-info">
+              <h4>Code block Copier</h4>
+              <p>Floating buttons on all code blocks with copy success feedback.</p>
+            </div>
+          </button>
+          <button class="demo-tab-btn" data-tab="exports">
+            <div class="tab-icon"><i data-lucide="file-code"></i></div>
+            <div class="tab-info">
+              <h4>Advanced Exports</h4>
+              <p>Generate PDF (A4 paginated), structured HTML, or plain text.</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- Dynamic Mockup Viewport -->
+        <div class="hero-mockup">
+          <div class="mockup-frame">
+            <div class="mockup-titlebar">
+              <div class="mockup-left">
+                <span class="mockup-sidebar-btn"><i data-lucide="sidebar"></i></span>
+              </div>
+              <div class="mockup-center">
+                <span class="mockup-title">document.md — LiteMD</span>
+                <span id="mockup-save-status" class="mockup-save-badge" style="display:none;">EDITING...</span>
+              </div>
+              <div class="mockup-win-controls">
+                <span class="mockup-win-btn minimize"></span>
+                <span class="mockup-win-btn maximize"></span>
+                <span class="mockup-win-btn close"></span>
+              </div>
+            </div>
+            <div class="mockup-body-wrapper">
+              <!-- Content loaded dynamically via JS -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -215,48 +257,6 @@ console.log(`Writing in ${app}!`);</code></pre>
     </div>
   </section>
 
-  <!-- Themes Showcase Section (Light / Dark Mode) -->
-  <section id="themes" class="theme-showcase">
-    <div class="section-container">
-      <div class="section-header">
-        <h2 class="section-title">Premium Light & Dark Themes</h2>
-        <p class="section-subtitle">LiteMD adapts to your environment. Choose between a deep dark theme for night writing or a clean light theme for the day.</p>
-      </div>
-      <div class="themes-comparison">
-        <!-- Light Mode Mockup -->
-        <div class="theme-window light-window">
-          <div class="window-label">Light Theme</div>
-          <div class="mockup-frame-simple">
-            <div class="mockup-titlebar-simple light-tb">
-              <span class="m-dot"></span>
-              <span class="m-title">ideas.md</span>
-              <span class="m-controls"></span>
-            </div>
-            <div class="mockup-content-simple light-content">
-              <h3 style="color:#1d1d1f; margin-bottom:8px; font-weight:700;">💡 Ideas for today</h3>
-              <p style="color:#515154; font-size:13px; margin-bottom:12px;">Write the technical documentation for the new microservice using LiteMD syntax.</p>
-            </div>
-          </div>
-        </div>
-        <!-- Dark Mode Mockup -->
-        <div class="theme-window dark-window">
-          <div class="window-label">Dark Theme</div>
-          <div class="mockup-frame-simple">
-            <div class="mockup-titlebar-simple dark-tb">
-              <span class="m-dot"></span>
-              <span class="m-title">ideas.md</span>
-              <span class="m-controls"></span>
-            </div>
-            <div class="mockup-content-simple dark-content">
-              <h3 style="color:#f5f5f7; margin-bottom:8px; font-weight:700;">🌙 Ideas for today</h3>
-              <p style="color:#86868b; font-size:13px; margin-bottom:12px;">Write the technical documentation for the new microservice using LiteMD syntax.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Download Section -->
   <section class="download-section">
     <div class="download-container-inner">
@@ -294,6 +294,229 @@ console.log(`Writing in ${app}!`);</code></pre>
         });
       });
     });
+
+    // Theme Toggle Handler
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-toggle-icon');
+    
+    // Check local storage or defaults
+    const currentTheme = localStorage.getItem('page-theme') || 'dark';
+    if (currentTheme === 'light') {
+      document.body.classList.add('light-theme-page');
+      themeIcon.setAttribute('data-lucide', 'sun');
+      lucide.createIcons();
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme-page');
+      const isLight = document.body.classList.contains('light-theme-page');
+      localStorage.setItem('page-theme', isLight ? 'light' : 'dark');
+      
+      themeIcon.setAttribute('data-lucide', isLight ? 'sun' : 'moon');
+      lucide.createIcons();
+    });
+
+    // Interactive Demo Tabs Handler
+    const tabData = {
+      wysiwyg: {
+        title: "document.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body">
+            <div class="mockup-editor">
+              <span class="line"><span class="token-h"># Dual-Mode Editor</span></span>
+              <span class="line"></span>
+              <span class="line">Write in visual **WYSIWYG** mode (Notion-style) or in raw plain text.</span>
+              <span class="line"></span>
+              <span class="line">- Instant rich formatting shortcuts.</span>
+              <span class="line">- Side-by-side real-time rendering.</span>
+            </div>
+            <div class="mockup-preview">
+              <h1>Dual-Mode Editor</h1>
+              <p>Write in visual <strong>WYSIWYG</strong> (Notion-style) or in raw plain text.</p>
+              <ul>
+                <li>Instant rich formatting shortcuts.</li>
+                <li>Side-by-side real-time rendering.</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      scroll: {
+        title: "synchronized_scroll.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body">
+            <div class="mockup-editor" style="overflow:hidden;">
+              <div class="scroll-editor-box">
+                <span class="line"><span class="token-h"># Synchronized Scroll</span></span>
+                <span class="line"></span>
+                <span class="line">Scroll either panel and the other moves in sync.</span>
+                <span class="line">Demo line 1</span>
+                <span class="line">Demo line 2</span>
+                <span class="line">Demo line 3</span>
+                <span class="line">Demo line 4</span>
+                <span class="line">Demo line 5</span>
+              </div>
+            </div>
+            <div class="mockup-preview" style="overflow:hidden;">
+              <div class="scroll-preview-box">
+                <h1>Synchronized Scroll</h1>
+                <p>Scroll either panel and the other moves in sync.</p>
+                <p>Demo line 1</p>
+                <p>Demo line 2</p>
+                <p>Demo line 3</p>
+                <p>Demo line 4</p>
+                <p>Demo line 5</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      dragdrop: {
+        title: "drag_drop_file.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body" style="position:relative;">
+            <div class="mockup-editor">
+              <span class="line">Drag and drop file here...</span>
+            </div>
+            <div class="mockup-preview">
+              <p>Drag and drop file here...</p>
+            </div>
+            <div class="mockup-drag-overlay">
+              <i data-lucide="file-down"></i>
+              <p>Drop to open file</p>
+            </div>
+          </div>
+        `
+      },
+      autosave: {
+        title: "auto_save.md — LiteMD",
+        saveStatus: "EDITING...",
+        body: `
+          <div class="mockup-body">
+            <div class="mockup-editor">
+              <span class="line"><span class="token-h"># Intelligent Auto-Save</span></span>
+              <span class="line"></span>
+              <span class="line">Your progress is automatically saved in the background.</span>
+            </div>
+            <div class="mockup-preview">
+              <h1>Intelligent Auto-Save</h1>
+              <p>Your progress is automatically saved in the background.</p>
+            </div>
+          </div>
+        `
+      },
+      copy: {
+        title: "code_source.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body" style="padding: 16px;">
+            <span class="line">Code block inside reader preview:</span>
+          </div>
+          <div class="mockup-preview" style="display:block; padding: 24px;">
+            <div class="mockup-code-wrapper">
+              <pre><code>const app = "LiteMD";
+console.log("Copied!");</code></pre>
+              <button class="mockup-copy-btn" id="demo-copy-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+        `
+      },
+      exports: {
+        title: "export_file.md — LiteMD",
+        saveStatus: "",
+        body: `
+          <div class="mockup-body" style="position:relative;">
+            <div class="mockup-editor">
+              <span class="line">Select export formatting...</span>
+            </div>
+            <div class="mockup-preview">
+              <p>Select export formatting...</p>
+            </div>
+            <div class="mockup-export-overlay">
+              <div class="export-dialog">
+                <h4>Export Document</h4>
+                <button class="export-opt"><i data-lucide="file-text"></i> Save as PDF (A4)</button>
+                <button class="export-opt"><i data-lucide="file-code"></i> Save as HTML</button>
+                <button class="export-opt"><i data-lucide="align-left"></i> Save as TXT</button>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    let autosaveInterval = null;
+
+    function selectDemoTab(tabKey) {
+      // Clear autosave intervals
+      clearInterval(autosaveInterval);
+      
+      const tab = tabData[tabKey];
+      const mockupTitle = document.querySelector('.hero-mockup .mockup-title');
+      const mockupSaveStatus = document.querySelector('.hero-mockup #mockup-save-status');
+      const mockupBodyContainer = document.querySelector('.hero-mockup .mockup-body-wrapper');
+      
+      // Update title and body
+      mockupTitle.textContent = tab.title;
+      mockupBodyContainer.innerHTML = tab.body;
+      
+      // Handle save status badge
+      if (tabKey === 'autosave') {
+        mockupSaveStatus.style.display = 'inline-block';
+        mockupSaveStatus.textContent = 'EDITING...';
+        mockupSaveStatus.className = 'mockup-save-badge save-status-editing';
+        
+        let state = 0; // 0 = editing, 1 = saving, 2 = saved
+        autosaveInterval = setInterval(() => {
+          state = (state + 1) % 3;
+          if (state === 0) {
+            mockupSaveStatus.textContent = 'EDITING...';
+            mockupSaveStatus.className = 'mockup-save-badge save-status-editing';
+          } else if (state === 1) {
+            mockupSaveStatus.textContent = 'SAVING...';
+            mockupSaveStatus.className = 'mockup-save-badge save-status-saving';
+          } else {
+            mockupSaveStatus.textContent = 'SAVED TO HISTORY';
+            mockupSaveStatus.className = 'mockup-save-badge save-status-saved';
+          }
+        }, 2000);
+      } else {
+        mockupSaveStatus.style.display = 'none';
+      }
+      
+      // Handle copy button interaction
+      if (tabKey === 'copy') {
+        const copyBtn = document.getElementById('demo-copy-btn');
+        copyBtn.addEventListener('click', () => {
+          copyBtn.classList.add('copied');
+          copyBtn.innerHTML = '<i data-lucide="check"></i>';
+          lucide.createIcons();
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyBtn.innerHTML = '<i data-lucide="copy"></i>';
+            lucide.createIcons();
+          }, 2000);
+        });
+      }
+      
+      // Re-render Lucide Icons
+      lucide.createIcons();
+    }
+
+    // Bind tab clicks
+    document.querySelectorAll('.demo-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.demo-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectDemoTab(btn.dataset.tab);
+      });
+    });
+
+    // Load initial tab
+    selectDemoTab('wysiwyg');
   </script>
 </body>
 </html>
