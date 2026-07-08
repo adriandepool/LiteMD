@@ -318,50 +318,21 @@ async function closeTab(tabId, e) {
 }
 
 function renderTabs() {
-  tabBar.innerHTML = '';
-  
-  tabs.forEach(tab => {
-    const tabEl = document.createElement('div');
-    tabEl.className = `editor-tab ${tab.id === activeTabId ? 'active' : ''}`;
-    tabEl.setAttribute('data-id', tab.id);
-    tabEl.addEventListener('click', () => switchTab(tab.id));
-
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = tab.name;
-    tabEl.appendChild(nameSpan);
-
-    if (tab.isDirty) {
-      const dirtyInd = document.createElement('span');
-      dirtyInd.className = 'tab-dirty-indicator';
-      tabEl.appendChild(dirtyInd);
-    }
-
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'tab-close-btn';
-    closeBtn.innerHTML = '<i data-lucide="x"></i>';
-    closeBtn.title = 'Cerrar pestaña';
-    closeBtn.addEventListener('click', (e) => closeTab(tab.id, e));
-    tabEl.appendChild(closeBtn);
-
-    tabBar.appendChild(tabEl);
-  });
-
-  if (window.lucide) {
-    window.lucide.createIcons();
-  }
+  updateRecentFilesUI();
 }
 
 function renderTabsOnly() {
   tabs.forEach(tab => {
-    const tabEl = document.querySelector(`.editor-tab[data-id="${tab.id}"]`);
-    if (tabEl) {
-      let dirtyInd = tabEl.querySelector('.tab-dirty-indicator');
-      if (tab.isDirty && !dirtyInd) {
-        dirtyInd = document.createElement('span');
-        dirtyInd.className = 'tab-dirty-indicator';
-        tabEl.insertBefore(dirtyInd, tabEl.querySelector('.tab-close-btn'));
-      } else if (!tab.isDirty && dirtyInd) {
-        dirtyInd.remove();
+    const li = document.querySelector(`#recent-files-list li[data-tab-id="${tab.id}"]`);
+    if (li) {
+      let dirtyDot = li.querySelector('.tab-dirty-indicator');
+      if (tab.isDirty && !dirtyDot) {
+        dirtyDot = document.createElement('span');
+        dirtyDot.className = 'tab-dirty-indicator';
+        const closeBtn = li.querySelector('.recent-file-close-btn');
+        li.insertBefore(dirtyDot, closeBtn);
+      } else if (!tab.isDirty && dirtyDot) {
+        dirtyDot.remove();
       }
     }
   });
@@ -801,39 +772,125 @@ async function saveFileAs() {
 // Recent Files List management
 function updateRecentFilesUI() {
   recentFilesList.innerHTML = '';
-  if (recentFiles.length === 0) {
-    recentFilesList.innerHTML = '<li class="empty-list">No hay archivos recientes</li>';
-    return;
-  }
-
-  recentFiles.forEach(file => {
+  
+  // 1. Render unsaved open files first (like "Sin Título")
+  const unsavedTabs = tabs.filter(t => t.path === null);
+  unsavedTabs.forEach(tab => {
     const li = document.createElement('li');
-    li.textContent = file.name;
-    li.title = file.path;
-    if (file.path === currentFilePath) {
+    li.className = 'open-tab';
+    li.setAttribute('data-tab-id', tab.id);
+    if (tab.id === activeTabId) {
       li.classList.add('active');
     }
     
-    li.addEventListener('click', async () => {
-      const existingTab = tabs.find(t => t.path === file.path);
-      if (existingTab) {
-        switchTab(existingTab.id);
-        return;
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'file-icon';
+    iconSpan.innerHTML = '<i data-lucide="file-warning"></i>';
+    li.appendChild(iconSpan);
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'file-name';
+    nameSpan.textContent = tab.name;
+    li.appendChild(nameSpan);
+    
+    if (tab.isDirty) {
+      const dirtyDot = document.createElement('span');
+      dirtyDot.className = 'tab-dirty-indicator';
+      li.appendChild(dirtyDot);
+    }
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'recent-file-close-btn';
+    closeBtn.innerHTML = '<i data-lucide="x"></i>';
+    closeBtn.title = 'Cerrar archivo';
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeTab(tab.id);
+    });
+    li.appendChild(closeBtn);
+    
+    li.addEventListener('click', () => switchTab(tab.id));
+    recentFilesList.appendChild(li);
+  });
+  
+  if (recentFiles.length === 0 && unsavedTabs.length === 0) {
+    recentFilesList.innerHTML = '<li class="empty-list">No hay archivos recientes</li>';
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+    return;
+  }
+
+  // 2. Render saved recent files
+  recentFiles.forEach(file => {
+    const li = document.createElement('li');
+    li.title = file.path;
+    
+    const openTab = tabs.find(t => t.path === file.path);
+    if (openTab) {
+      li.className = 'open-tab';
+      li.setAttribute('data-tab-id', openTab.id);
+      if (openTab.id === activeTabId) {
+        li.classList.add('active');
       }
       
-      try {
-        const content = await invoke('read_file', { path: file.path });
-        loadFileData({ path: file.path, name: file.name, content });
-      } catch (error) {
-        alert('No se pudo abrir el archivo de la lista de recientes. Es posible que haya sido movido o eliminado.');
-        recentFiles = recentFiles.filter(f => f.path !== file.path);
-        localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
-        updateRecentFilesUI();
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'file-icon';
+      iconSpan.innerHTML = '<i data-lucide="file-edit"></i>';
+      li.appendChild(iconSpan);
+      
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'file-name';
+      nameSpan.textContent = file.name;
+      li.appendChild(nameSpan);
+      
+      if (openTab.isDirty) {
+        const dirtyDot = document.createElement('span');
+        dirtyDot.className = 'tab-dirty-indicator';
+        li.appendChild(dirtyDot);
       }
-    });
+      
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'recent-file-close-btn';
+      closeBtn.innerHTML = '<i data-lucide="x"></i>';
+      closeBtn.title = 'Cerrar archivo';
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeTab(openTab.id);
+      });
+      li.appendChild(closeBtn);
+      
+      li.addEventListener('click', () => switchTab(openTab.id));
+    } else {
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'file-icon';
+      iconSpan.innerHTML = '<i data-lucide="file"></i>';
+      li.appendChild(iconSpan);
+      
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'file-name';
+      nameSpan.textContent = file.name;
+      li.appendChild(nameSpan);
+      
+      li.addEventListener('click', async () => {
+        try {
+          const content = await invoke('read_file', { path: file.path });
+          loadFileData({ path: file.path, name: file.name, content });
+        } catch (error) {
+          alert('No se pudo abrir el archivo de la lista de recientes. Es posible que haya sido movido o eliminado.');
+          recentFiles = recentFiles.filter(f => f.path !== file.path);
+          localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
+          updateRecentFilesUI();
+        }
+      });
+    }
 
     recentFilesList.appendChild(li);
   });
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
 }
 
 function addToRecentFiles(name, path) {
