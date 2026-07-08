@@ -694,7 +694,43 @@ editor.addEventListener('click', (e) => {
   }
 });
 
-// Emoji dropdown toggle & item select logic
+// Emoji database sorted by categories
+const emojiData = {
+  caras: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😴', '😷', '🤒', '🤕'],
+  personas: ['👋', '🤚', '🖐️', '✋', '🖖', '👌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🧠', '👀', '👄', '💋', '❤️', '💔', '💖', '🔥'],
+  animales: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐽', '🐸', '🐵', '🙈', '🙉', '🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🦆', '🦅', '🦉', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🕷️', '🕸️', '🐢', '🐍', '🦎', '🐙', '🦑', '🦀', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🐘', '🐫', '🦒', '🦘', '🐑', '🐐', '🦌', '🐕', '🐈', '🐇', '🦔', '🐾', '🐉', '🌵', '🎄', '🌲', '🌳', '🌴', '🌱', '🌿', '☘️', '🍀', '🍁', '🍂', '🍃'],
+  comida: ['🍇', '🍉', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏', '🍐', '🍒', '🍓', '🥝', '🍅', '🥥', '🥑', '🥔', '🥕', '🌽', '🌶️', '🥒', '🥬', '🥦', '🍄', '🥜', '🍞', '🥐', '🧀', '🥓', '🍔', '🍟', '🍕', 'hotdog', '🥪', '🌮', '🌯', '🍳', '🥘', '🥗', '🍿', '🧈', '🍚', '🍛', '🍜', '🍝', '🍣', '🍤', '🍦', '🍩', '🍪', '🍰', '🍫', '🍬', '🍭', '🍯', '🥛', '☕', '🍵', '🍺', '🍻', '🍷', '🍸', '🥃', '🥤'],
+  viajes: ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', '🚚', '🚜', '🏍️', '🛵', '🚲', '🛑', '🚧', '⚓', '⛵', '🛶', '🚤', '⛴️', '✈️', '🚀', '🛸', '☀️', '🏙️', '🌇', '🌅', '🌋', '⛰️', '🗻', '🏕️', '⛺', '🏠', '🏢', '🏥', '🏦', '🏨', '🏫', '🏰', '🏟️', '🌃', '🎈', '🎁', '🔮'],
+  actividades: ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🎱', '🏓', '🏸', '🏒', '🏹', '🎣', '🥊', '🥋', '🥅', '⛳', '⛸️', '🎿', '🎯', '🎮', '🕹️', '🎰', '🎲', '🧩', '♟️', '🎭', '🎨', '🎪', '🎤', '🎧', '🎼', '🎹', '🥁', '🎷', '🎺', '🎸', '🎻', '🎬', '🎫'],
+  objetos: ['⌚', '📱', '💻', '⌨️', '🖱️', '🖨️', '📷', '📹', '🎥', '📽️', '📞', '📺', '📻', '🎙️', '⏱️', '⏰', '⌛', '🔋', '🔌', '💡', '🔦', '🕯️', '🗑️', '💸', '💵', '💶', '💷', '🪙', '💰', '💳', '💎', '🔧', '🔨', '🧰', '🧲', '🪜', '🔬', '🔭', '💉', '💊', '🩹', '🩺', '🔑', '🔒', '🔓'],
+  simbolos: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '☮️', '✡️', '☯️', '♈', '♉', '♊', 'cancer', 'leo', 'virgo', 'libra', 'scorpius', 'sagittarius', 'capricorn', 'aquarius', 'pisces', 'id', '⚛️', '☢️', '☣️', '💢', '🚫', '🛑', '⚠️']
+};
+
+const emojiGrid = document.getElementById('emoji-grid');
+
+// Render emoji buttons dynamically inside the grid
+function renderEmojiGrid(category) {
+  emojiGrid.innerHTML = '';
+  const list = emojiData[category] || [];
+  
+  list.forEach(emoji => {
+    const btn = document.createElement('button');
+    btn.className = 'emoji-btn';
+    btn.type = 'button';
+    btn.textContent = emoji;
+    btn.addEventListener('click', () => {
+      emojiDropdownMenu.classList.add('hidden');
+      if (isRawMode) {
+        wrapSelectionInRawEditor(emoji, '');
+      } else {
+        execFormat('insertHTML', emoji);
+      }
+    });
+    emojiGrid.appendChild(btn);
+  });
+}
+
+// Emoji dropdown toggle logic
 btnEmoji.addEventListener('click', (e) => {
   e.stopPropagation();
   fontDropdownMenu.classList.add('hidden');
@@ -702,17 +738,13 @@ btnEmoji.addEventListener('click', (e) => {
   emojiDropdownMenu.classList.toggle('hidden');
 });
 
-// Handle emoji buttons clicks
-document.querySelectorAll('.emoji-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const emoji = btn.textContent.trim();
-    emojiDropdownMenu.classList.add('hidden');
-    
-    if (isRawMode) {
-      wrapSelectionInRawEditor(emoji, '');
-    } else {
-      execFormat('insertHTML', emoji);
-    }
+// Category switching event listeners
+document.querySelectorAll('.emoji-tab-btn').forEach(tabBtn => {
+  tabBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.emoji-tab-btn').forEach(b => b.classList.remove('active'));
+    tabBtn.classList.add('active');
+    renderEmojiGrid(tabBtn.dataset.cat);
   });
 });
 
@@ -1443,6 +1475,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   
   // Create initial empty tab
   createTab(null, 'Sin Título', '');
+  
+  // Initialize Emoji grid
+  if (typeof renderEmojiGrid === 'function') {
+    renderEmojiGrid('caras');
+  }
   
   updateCounts();
   renderMarkdown();

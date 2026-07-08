@@ -195,19 +195,18 @@
                 <i data-lucide="smile"></i>
               </button>
               <div class="dropdown-menu hidden" id="emoji-dropdown-menu">
-                <div class="emoji-grid">
-                  <button class="emoji-btn" type="button">😀</button>
-                  <button class="emoji-btn" type="button">😂</button>
-                  <button class="emoji-btn" type="button">😍</button>
-                  <button class="emoji-btn" type="button">👍</button>
-                  <button class="emoji-btn" type="button">🔥</button>
-                  <button class="emoji-btn" type="button">🎉</button>
-                  <button class="emoji-btn" type="button">🚀</button>
-                  <button class="emoji-btn" type="button">💡</button>
-                  <button class="emoji-btn" type="button">📝</button>
-                  <button class="emoji-btn" type="button">📅</button>
-                  <button class="emoji-btn" type="button">🍕</button>
-                  <button class="emoji-btn" type="button">🦀</button>
+                <div class="emoji-picker-tabs">
+                  <button class="emoji-tab-btn active" type="button" data-cat="caras" title="Caras">😃</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="personas" title="Gente">👋</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="animales" title="Naturaleza">🐱</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="comida" title="Comida">🍎</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="viajes" title="Viajes">🚗</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="actividades" title="Actividades">⚽</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="objetos" title="Objetos">💡</button>
+                  <button class="emoji-tab-btn" type="button" data-cat="simbolos" title="Símbolos">❤️</button>
+                </div>
+                <div class="emoji-grid" id="emoji-grid">
+                  <!-- Emojis populated by JS -->
                 </div>
               </div>
             </div>
