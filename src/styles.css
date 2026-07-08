@@ -216,6 +216,7 @@ body {
   padding: 2px;
   border-radius: 8px;
   align-items: center;
+  margin-right: 16px;
 }
 
 .view-btn {
@@ -555,6 +556,7 @@ body.light-theme .recent-file-close-btn:hover {
 .app-version {
   font-size: 10px;
   color: var(--text-muted);
+  padding-left: 12px;
 }
 
 /* Editor & Preview Panels Grid Container */
@@ -1505,4 +1507,41 @@ body.light-theme .editor-tab .tab-close-btn:hover {
 
 #recent-files-list li.sidebar-list-divider:hover {
   background-color: var(--border-color);
+}
+
+/* Emoji Dropdown Picker */
+#emoji-dropdown-menu {
+  min-width: 140px;
+  padding: 8px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  margin-bottom: 8px;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.emoji-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.emoji-btn:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.15);
 }

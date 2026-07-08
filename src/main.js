@@ -67,6 +67,9 @@ const btnUl = document.getElementById('btn-ul');
 const btnOl = document.getElementById('btn-ol');
 const btnQuote = document.getElementById('btn-quote');
 const btnCode = document.getElementById('btn-code');
+const btnChecklist = document.getElementById('btn-checklist');
+const btnEmoji = document.getElementById('btn-emoji');
+const emojiDropdownMenu = document.getElementById('emoji-dropdown-menu');
 
 // Footer Elements
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -156,6 +159,7 @@ viewButtons.forEach(btn => {
       if (isRawMode) {
         const markdownText = editor.innerText;
         editor.innerHTML = window.marked.parse(markdownText);
+        makeCheckboxesInteractive();
         editor.classList.add('markdown-body');
         editor.classList.remove('raw-editor');
         document.querySelector('.editor-toolbar').classList.remove('hidden');
@@ -283,6 +287,7 @@ function switchTab(tabId) {
       editor.innerText = activeTab.content;
     } else {
       editor.innerHTML = window.marked.parse(activeTab.content);
+      makeCheckboxesInteractive();
     }
     
     docTitle.textContent = activeTab.name;
@@ -560,6 +565,15 @@ btnCode.addEventListener('click', () => {
   }
 });
 
+btnChecklist.addEventListener('click', () => {
+  if (isRawMode) {
+    wrapSelectionInRawEditor('- [ ] ', '');
+    return;
+  }
+  execFormat('insertHTML', '<ul><li><input type="checkbox"> &nbsp;</li></ul>');
+  makeCheckboxesInteractive();
+});
+
 // Wrap selection with markdown tags in raw text mode
 function wrapSelectionInRawEditor(prefix, suffix) {
   const selection = window.getSelection();
@@ -658,6 +672,48 @@ editor.addEventListener('keydown', (e) => {
       }
     }
   }
+});
+
+// Interactive Checklist helpers
+function makeCheckboxesInteractive() {
+  editor.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.removeAttribute('disabled');
+  });
+}
+
+// Checkbox click listener to toggle 'checked' attribute in contenteditable DOM
+editor.addEventListener('click', (e) => {
+  if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+    const cb = e.target;
+    if (cb.checked) {
+      cb.setAttribute('checked', 'checked');
+    } else {
+      cb.removeAttribute('checked');
+    }
+    checkUnsavedChanges();
+  }
+});
+
+// Emoji dropdown toggle & item select logic
+btnEmoji.addEventListener('click', (e) => {
+  e.stopPropagation();
+  fontDropdownMenu.classList.add('hidden');
+  exportDropdownMenu.classList.add('hidden');
+  emojiDropdownMenu.classList.toggle('hidden');
+});
+
+// Handle emoji buttons clicks
+document.querySelectorAll('.emoji-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const emoji = btn.textContent.trim();
+    emojiDropdownMenu.classList.add('hidden');
+    
+    if (isRawMode) {
+      wrapSelectionInRawEditor(emoji, '');
+    } else {
+      execFormat('insertHTML', emoji);
+    }
+  });
 });
 
 // File Operations Actions
@@ -1220,12 +1276,14 @@ applyFont(currentFont);
 fontSelectBtn.addEventListener('click', (e) => {
   e.stopPropagation();
   exportDropdownMenu.classList.add('hidden');
+  emojiDropdownMenu.classList.add('hidden');
   fontDropdownMenu.classList.toggle('hidden');
 });
 
 exportBtn.addEventListener('click', (e) => {
   e.stopPropagation();
   fontDropdownMenu.classList.add('hidden');
+  emojiDropdownMenu.classList.add('hidden');
   exportDropdownMenu.classList.toggle('hidden');
 });
 
@@ -1234,6 +1292,7 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('.dropdown-container')) {
     fontDropdownMenu.classList.add('hidden');
     exportDropdownMenu.classList.add('hidden');
+    emojiDropdownMenu.classList.add('hidden');
   }
 });
 
