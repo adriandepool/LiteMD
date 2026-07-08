@@ -231,6 +231,7 @@ function createTab(path = null, name = 'Sin Título', content = '') {
     tabs[0].name = name;
     tabs[0].content = content;
     tabs[0].isDirty = false;
+    activeTabId = null; // Force reload in switchTab
     switchTab(tabs[0].id);
     renderTabs();
     return;
