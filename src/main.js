@@ -9,6 +9,16 @@ const turndownService = new TurndownService({
   codeBlockStyle: 'fenced'
 });
 
+// Rule to convert checkboxes back to GFM task list syntax
+turndownService.addRule('taskItems', {
+  filter: function (node) {
+    return node.nodeName === 'INPUT' && node.getAttribute('type') === 'checkbox';
+  },
+  replacement: function (content, node) {
+    return node.checked ? '[x]' : '[ ]';
+  }
+});
+
 // DOM Elements
 const docTitle = document.getElementById('doc-title');
 const unsavedIndicator = document.getElementById('unsaved-indicator');
