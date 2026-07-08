@@ -94,18 +94,24 @@
             <i data-lucide="download"></i>
             <span>Guardar Como</span>
           </button>
-          <button class="sidebar-action-btn" id="export-pdf-btn">
-            <i data-lucide="file-text"></i>
-            <span>Exportar PDF</span>
-          </button>
-          <button class="sidebar-action-btn" id="export-html-btn">
-            <i data-lucide="file-code"></i>
-            <span>Exportar HTML</span>
-          </button>
-          <button class="sidebar-action-btn" id="export-txt-btn">
-            <i data-lucide="align-left"></i>
-            <span>Exportar Texto Plano</span>
-          </button>
+          <div class="dropdown-container sidebar-dropdown">
+            <button class="sidebar-action-btn" id="export-btn" title="Exportar Documento">
+              <i data-lucide="download-cloud"></i>
+              <span>Exportar...</span>
+              <i data-lucide="chevron-down" class="chevron-icon"></i>
+            </button>
+            <div class="dropdown-menu hidden" id="export-dropdown-menu">
+              <button class="dropdown-item" id="export-pdf-btn">
+                <i data-lucide="file-text"></i> PDF
+              </button>
+              <button class="dropdown-item" id="export-html-btn">
+                <i data-lucide="file-code"></i> HTML
+              </button>
+              <button class="dropdown-item" id="export-txt-btn">
+                <i data-lucide="align-left"></i> Texto Plano
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="sidebar-divider"></div>
@@ -152,6 +158,7 @@
       <!-- Editor & Preview Panels Container -->
       <main id="editor-preview-container" class="view-editor">
         <section id="editor-pane">
+          <div class="editor-tab-bar" id="tab-bar"></div>
           <div class="editor-toolbar">
             <button class="toolbar-tool-btn" id="btn-bold" title="Negrita (Ctrl+B)">
               <i data-lucide="bold"></i>
@@ -175,6 +182,9 @@
             </button>
             <button class="toolbar-tool-btn" id="btn-quote" title="Cita (Blockquote)">
               <i data-lucide="quote"></i>
+            </button>
+            <button class="toolbar-tool-btn" id="btn-code" title="Código (Ctrl+K)">
+              <i data-lucide="code"></i>
             </button>
           </div>
           <div id="markdown-editor" contenteditable="true" class="markdown-body" placeholder="Escribe tu Markdown aquí..."></div>

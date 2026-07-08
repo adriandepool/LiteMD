@@ -34,6 +34,8 @@ const newFileBtn = document.getElementById('new-file-btn');
 const openFileBtn = document.getElementById('open-file-btn');
 const saveFileBtn = document.getElementById('save-file-btn');
 const saveAsBtn = document.getElementById('save-as-btn');
+const exportBtn = document.getElementById('export-btn');
+const exportDropdownMenu = document.getElementById('export-dropdown-menu');
 const exportPdfBtn = document.getElementById('export-pdf-btn');
 const exportHtmlBtn = document.getElementById('export-html-btn');
 const exportTxtBtn = document.getElementById('export-txt-btn');
@@ -44,6 +46,7 @@ const saveStatus = document.getElementById('save-status');
 const dragDropOverlay = document.getElementById('drag-drop-overlay');
 
 // Toolbar Elements
+const tabBar = document.getElementById('tab-bar');
 const btnBold = document.getElementById('btn-bold');
 const btnItalic = document.getElementById('btn-italic');
 const btnUnderline = document.getElementById('btn-underline');
@@ -53,6 +56,7 @@ const btnH3 = document.getElementById('btn-h3');
 const btnUl = document.getElementById('btn-ul');
 const btnOl = document.getElementById('btn-ol');
 const btnQuote = document.getElementById('btn-quote');
+const btnCode = document.getElementById('btn-code');
 
 // Footer Elements
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -66,6 +70,8 @@ const lineCount = document.getElementById('line-count');
 // Application State
 let currentFilePath = null;
 let currentFileContent = '';
+let tabs = [];
+let activeTabId = null;
 let recentFiles = JSON.parse(localStorage.getItem('recentFiles')) || [];
 let isRawMode = false; // true = Raw markdown, false = WYSIWYG rich text
 let autosaveEnabled = localStorage.getItem('autosaveEnabled') === 'true';
@@ -204,6 +210,163 @@ closeHelpBtn.addEventListener('click', () => {
   helpDrawer.classList.add('hidden');
 });
 
+// Tab System Helpers
+function generateTabId() {
+  return 'tab-' + Math.random().toString(36).substr(2, 9);
+}
+
+function createTab(path = null, name = 'Sin Título', content = '') {
+  // If the file is already open in a tab, switch to it!
+  if (path) {
+    const existingTab = tabs.find(t => t.path === path);
+    if (existingTab) {
+      switchTab(existingTab.id);
+      return;
+    }
+  }
+
+  // If there is only one tab, and it is the default empty tab, reuse/replace it!
+  if (tabs.length === 1 && tabs[0].path === null && tabs[0].content === '' && !tabs[0].isDirty) {
+    tabs[0].path = path;
+    tabs[0].name = name;
+    tabs[0].content = content;
+    tabs[0].isDirty = false;
+    switchTab(tabs[0].id);
+    renderTabs();
+    return;
+  }
+
+  const newId = generateTabId();
+  const newTab = {
+    id: newId,
+    path: path,
+    name: name,
+    content: content,
+    isDirty: false
+  };
+
+  tabs.push(newTab);
+  renderTabs();
+  switchTab(newId);
+}
+
+function switchTab(tabId) {
+  if (activeTabId === tabId) return;
+
+  // Save current editor state to the previous active tab
+  if (activeTabId) {
+    const prevTab = tabs.find(t => t.id === activeTabId);
+    if (prevTab) {
+      prevTab.content = getMarkdownContent();
+    }
+  }
+
+  activeTabId = tabId;
+  const activeTab = tabs.find(t => t.id === tabId);
+  if (activeTab) {
+    currentFilePath = activeTab.path;
+    currentFileContent = activeTab.content;
+    
+    // Set text depending on isRawMode
+    if (isRawMode) {
+      editor.innerText = activeTab.content;
+    } else {
+      editor.innerHTML = window.marked.parse(activeTab.content);
+    }
+    
+    docTitle.textContent = activeTab.name;
+    updateCounts();
+    checkUnsavedChanges();
+    renderMarkdown();
+    renderTabs();
+  }
+}
+
+async function closeTab(tabId, e) {
+  if (e) e.stopPropagation();
+
+  const tabIndex = tabs.findIndex(t => t.id === tabId);
+  if (tabIndex === -1) return;
+
+  const tab = tabs[tabIndex];
+  
+  if (tabId === activeTabId) {
+    tab.content = getMarkdownContent();
+  }
+
+  if (tab.isDirty) {
+    const confirmDiscard = confirm(`¿Deseas descartar los cambios no guardados en "${tab.name}"?`);
+    if (!confirmDiscard) return;
+  }
+
+  tabs.splice(tabIndex, 1);
+
+  if (tabs.length === 0) {
+    activeTabId = null;
+    createTab();
+    return;
+  }
+
+  if (activeTabId === tabId) {
+    const nextActiveIndex = Math.min(tabIndex, tabs.length - 1);
+    const nextActiveTab = tabs[nextActiveIndex];
+    activeTabId = null; // force reload
+    switchTab(nextActiveTab.id);
+  } else {
+    renderTabs();
+  }
+}
+
+function renderTabs() {
+  tabBar.innerHTML = '';
+  
+  tabs.forEach(tab => {
+    const tabEl = document.createElement('div');
+    tabEl.className = `editor-tab ${tab.id === activeTabId ? 'active' : ''}`;
+    tabEl.setAttribute('data-id', tab.id);
+    tabEl.addEventListener('click', () => switchTab(tab.id));
+
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = tab.name;
+    tabEl.appendChild(nameSpan);
+
+    if (tab.isDirty) {
+      const dirtyInd = document.createElement('span');
+      dirtyInd.className = 'tab-dirty-indicator';
+      tabEl.appendChild(dirtyInd);
+    }
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'tab-close-btn';
+    closeBtn.innerHTML = '<i data-lucide="x"></i>';
+    closeBtn.title = 'Cerrar pestaña';
+    closeBtn.addEventListener('click', (e) => closeTab(tab.id, e));
+    tabEl.appendChild(closeBtn);
+
+    tabBar.appendChild(tabEl);
+  });
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+function renderTabsOnly() {
+  tabs.forEach(tab => {
+    const tabEl = document.querySelector(`.editor-tab[data-id="${tab.id}"]`);
+    if (tabEl) {
+      let dirtyInd = tabEl.querySelector('.tab-dirty-indicator');
+      if (tab.isDirty && !dirtyInd) {
+        dirtyInd = document.createElement('span');
+        dirtyInd.className = 'tab-dirty-indicator';
+        tabEl.insertBefore(dirtyInd, tabEl.querySelector('.tab-close-btn'));
+      } else if (!tab.isDirty && dirtyInd) {
+        dirtyInd.remove();
+      }
+    }
+  });
+}
+
 // Editor Helper: Update Word & Line Counts
 function updateCounts() {
   const text = getMarkdownContent();
@@ -289,11 +452,21 @@ function renderMarkdown() {
 function checkUnsavedChanges() {
   const markdownText = getMarkdownContent();
   const hasChanges = markdownText.trim() !== currentFileContent.trim();
+  
+  if (activeTabId) {
+    const activeTab = tabs.find(t => t.id === activeTabId);
+    if (activeTab) {
+      activeTab.isDirty = hasChanges;
+    }
+  }
+
   if (hasChanges) {
     unsavedIndicator.classList.remove('hidden');
   } else {
     unsavedIndicator.classList.add('hidden');
   }
+  
+  renderTabsOnly();
 }
 
 // Titlebar Save Status Helper
@@ -388,6 +561,22 @@ btnH3.addEventListener('click', () => execFormat('formatBlock', '<h3>'));
 btnUl.addEventListener('click', () => execFormat('insertUnorderedList'));
 btnOl.addEventListener('click', () => execFormat('insertOrderedList'));
 btnQuote.addEventListener('click', () => execFormat('formatBlock', '<blockquote>'));
+btnCode.addEventListener('click', () => {
+  if (isRawMode) {
+    wrapSelectionInRawEditor('`', '`');
+    return;
+  }
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+  const range = selection.getRangeAt(0);
+  const selectedText = range.toString();
+  
+  if (selectedText.includes('\n')) {
+    execFormat('insertHTML', `<pre><code>${selectedText}</code></pre>`);
+  } else {
+    execFormat('insertHTML', `<code>${selectedText || 'código'}</code>`);
+  }
+});
 
 // Wrap selection with markdown tags in raw text mode
 function wrapSelectionInRawEditor(prefix, suffix) {
@@ -425,6 +614,9 @@ editor.addEventListener('keydown', (e) => {
       } else if (e.key === 'u' || e.key === 'U') {
         e.preventDefault();
         wrapSelectionInRawEditor('<u>', '</u>');
+      } else if (e.key === 'k' || e.key === 'K') {
+        e.preventDefault();
+        wrapSelectionInRawEditor('`', '`');
       }
     }
     return; // Don't run WYSIWYG block actions
@@ -488,29 +680,10 @@ editor.addEventListener('keydown', (e) => {
 
 // File Operations Actions
 async function newFile() {
-  const currentMarkdown = getMarkdownContent();
-  if (currentMarkdown.trim() !== currentFileContent.trim()) {
-    const confirmDiscard = confirm('¿Deseas descartar los cambios no guardados?');
-    if (!confirmDiscard) return;
-  }
-  
-  currentFilePath = null;
-  currentFileContent = '';
-  editor.innerHTML = '';
-  editor.innerText = '';
-  docTitle.textContent = 'Sin Título';
-  updateCounts();
-  checkUnsavedChanges();
-  renderMarkdown();
+  createTab(null, 'Sin Título', '');
 }
 
 async function openFile() {
-  const currentMarkdown = getMarkdownContent();
-  if (currentMarkdown.trim() !== currentFileContent.trim()) {
-    const confirmDiscard = confirm('¿Deseas descartar los cambios no guardados?');
-    if (!confirmDiscard) return;
-  }
-
   if (isTauri) {
     try {
       const fileData = await invoke('open_file_dialog');
@@ -543,21 +716,7 @@ async function openFile() {
 }
 
 function loadFileData(fileData) {
-  currentFilePath = fileData.path;
-  currentFileContent = fileData.content;
-  
-  if (isRawMode) {
-    editor.innerHTML = ''; // Clear HTML
-    editor.innerText = fileData.content; // Load as plain text
-  } else {
-    editor.innerHTML = window.marked.parse(fileData.content); // Load as rich text
-  }
-  
-  docTitle.textContent = fileData.name;
-  
-  updateCounts();
-  checkUnsavedChanges();
-  renderMarkdown();
+  createTab(fileData.path, fileData.name, fileData.content);
   addToRecentFiles(fileData.name, fileData.path);
 }
 
@@ -571,7 +730,15 @@ async function saveFile() {
       const text = getMarkdownContent();
       await invoke('save_file', { path: currentFilePath, content: text });
       currentFileContent = text;
+      
+      const activeTab = tabs.find(t => t.id === activeTabId);
+      if (activeTab) {
+        activeTab.content = text;
+        activeTab.isDirty = false;
+      }
+      
       checkUnsavedChanges();
+      renderTabs();
     } catch (error) {
       alert('Error al guardar el archivo: ' + error);
     }
@@ -592,7 +759,17 @@ async function saveFileAs() {
         const separator = path.includes('\\') ? '\\' : '/';
         const name = path.split(separator).pop();
         docTitle.textContent = name;
+        
+        const activeTab = tabs.find(t => t.id === activeTabId);
+        if (activeTab) {
+          activeTab.path = path;
+          activeTab.name = name;
+          activeTab.content = text;
+          activeTab.isDirty = false;
+        }
+        
         checkUnsavedChanges();
+        renderTabs();
         addToRecentFiles(name, path);
       }
     } catch (error) {
@@ -609,7 +786,15 @@ async function saveFileAs() {
     URL.revokeObjectURL(url);
     
     currentFileContent = text;
+    
+    const activeTab = tabs.find(t => t.id === activeTabId);
+    if (activeTab) {
+      activeTab.content = text;
+      activeTab.isDirty = false;
+    }
+    
     checkUnsavedChanges();
+    renderTabs();
   }
 }
 
@@ -630,11 +815,10 @@ function updateRecentFilesUI() {
     }
     
     li.addEventListener('click', async () => {
-      if (file.path === currentFilePath) return;
-      const currentMarkdown = getMarkdownContent();
-      if (currentMarkdown.trim() !== currentFileContent.trim()) {
-        const confirmDiscard = confirm('¿Deseas descartar los cambios no guardados?');
-        if (!confirmDiscard) return;
+      const existingTab = tabs.find(t => t.path === file.path);
+      if (existingTab) {
+        switchTab(existingTab.id);
+        return;
       }
       
       try {
@@ -827,7 +1011,10 @@ newFileBtn.addEventListener('click', newFile);
 openFileBtn.addEventListener('click', openFile);
 saveFileBtn.addEventListener('click', saveFile);
 saveAsBtn.addEventListener('click', saveFileAs);
-exportPdfBtn.addEventListener('click', exportToPdf);
+exportPdfBtn.addEventListener('click', () => {
+  exportDropdownMenu.classList.add('hidden');
+  exportToPdf();
+});
 
 // Export HTML and Plain Text
 async function exportToHtml() {
@@ -942,8 +1129,14 @@ async function exportToTxt() {
   }
 }
 
-exportHtmlBtn.addEventListener('click', exportToHtml);
-exportTxtBtn.addEventListener('click', exportToTxt);
+exportHtmlBtn.addEventListener('click', () => {
+  exportDropdownMenu.classList.add('hidden');
+  exportToHtml();
+});
+exportTxtBtn.addEventListener('click', () => {
+  exportDropdownMenu.classList.add('hidden');
+  exportToTxt();
+});
 
 // Keyboard shortcuts (Ctrl+S to save, Ctrl+O to open, Ctrl+N for new)
 window.addEventListener('keydown', (e) => {
@@ -989,13 +1182,21 @@ applyFont(currentFont);
 // Toggle dropdown menu
 fontSelectBtn.addEventListener('click', (e) => {
   e.stopPropagation();
+  exportDropdownMenu.classList.add('hidden');
   fontDropdownMenu.classList.toggle('hidden');
+});
+
+exportBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  fontDropdownMenu.classList.add('hidden');
+  exportDropdownMenu.classList.toggle('hidden');
 });
 
 // Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.dropdown-container')) {
     fontDropdownMenu.classList.add('hidden');
+    exportDropdownMenu.classList.add('hidden');
   }
 });
 
@@ -1073,12 +1274,6 @@ if (isTauri) {
       const ext = filePath.split('.').pop().toLowerCase();
       
       if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
-        const currentMarkdown = getMarkdownContent();
-        if (currentMarkdown.trim() !== currentFileContent.trim()) {
-          const confirmDiscard = confirm('¿Deseas descartar los cambios no guardados?');
-          if (!confirmDiscard) return;
-        }
-        
         try {
           const content = await invoke('read_file', { path: filePath });
           const separator = filePath.includes('\\') ? '\\' : '/';
@@ -1120,12 +1315,6 @@ if (isTauri) {
     if (file) {
       const ext = file.name.split('.').pop().toLowerCase();
       if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
-        const currentMarkdown = getMarkdownContent();
-        if (currentMarkdown.trim() !== currentFileContent.trim()) {
-          const confirmDiscard = confirm('¿Deseas descartar los cambios no guardados?');
-          if (!confirmDiscard) return;
-        }
-
         const reader = new FileReader();
         reader.onload = (evt) => {
           loadFileData({
@@ -1155,6 +1344,10 @@ autosaveToggle.addEventListener('change', (e) => {
 window.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateMaximizeButton();
+  
+  // Create initial empty tab
+  createTab(null, 'Sin Título', '');
+  
   updateCounts();
   renderMarkdown();
   updateRecentFilesUI();
