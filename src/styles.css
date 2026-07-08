@@ -1493,3 +1493,16 @@ body.light-theme .editor-tab .tab-close-btn:hover {
   height: 12px;
   opacity: 0.5;
 }
+
+#recent-files-list li.sidebar-list-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 6px 12px;
+  padding: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+#recent-files-list li.sidebar-list-divider:hover {
+  background-color: var(--border-color);
+}

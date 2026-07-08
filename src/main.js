@@ -773,9 +773,8 @@ async function saveFileAs() {
 function updateRecentFilesUI() {
   recentFilesList.innerHTML = '';
   
-  // 1. Render unsaved open files first (like "Sin Título")
-  const unsavedTabs = tabs.filter(t => t.path === null);
-  unsavedTabs.forEach(tab => {
+  // 1. Render all open files first (both saved and unsaved)
+  tabs.forEach(tab => {
     const li = document.createElement('li');
     li.className = 'open-tab';
     li.setAttribute('data-tab-id', tab.id);
@@ -785,7 +784,9 @@ function updateRecentFilesUI() {
     
     const iconSpan = document.createElement('span');
     iconSpan.className = 'file-icon';
-    iconSpan.innerHTML = '<i data-lucide="file-warning"></i>';
+    iconSpan.innerHTML = tab.path 
+      ? '<i data-lucide="file-edit"></i>' 
+      : '<i data-lucide="file-warning"></i>';
     li.appendChild(iconSpan);
     
     const nameSpan = document.createElement('span');
@@ -813,80 +814,48 @@ function updateRecentFilesUI() {
     recentFilesList.appendChild(li);
   });
   
-  if (recentFiles.length === 0 && unsavedTabs.length === 0) {
-    recentFilesList.innerHTML = '<li class="empty-list">No hay archivos recientes</li>';
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
-    return;
+  // 2. Render divider if we have both open files and closed history
+  const closedRecents = recentFiles.filter(file => !tabs.some(t => t.path === file.path));
+  
+  if (tabs.length > 0 && closedRecents.length > 0) {
+    const divider = document.createElement('li');
+    divider.className = 'sidebar-list-divider';
+    recentFilesList.appendChild(divider);
   }
-
-  // 2. Render saved recent files
-  recentFiles.forEach(file => {
+  
+  // 3. Render closed recent files history
+  closedRecents.forEach(file => {
     const li = document.createElement('li');
     li.title = file.path;
     
-    const openTab = tabs.find(t => t.path === file.path);
-    if (openTab) {
-      li.className = 'open-tab';
-      li.setAttribute('data-tab-id', openTab.id);
-      if (openTab.id === activeTabId) {
-        li.classList.add('active');
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'file-icon';
+    iconSpan.innerHTML = '<i data-lucide="file"></i>';
+    li.appendChild(iconSpan);
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'file-name';
+    nameSpan.textContent = file.name;
+    li.appendChild(nameSpan);
+    
+    li.addEventListener('click', async () => {
+      try {
+        const content = await invoke('read_file', { path: file.path });
+        loadFileData({ path: file.path, name: file.name, content });
+      } catch (error) {
+        alert('No se pudo abrir el archivo de la lista de recientes. Es posible que haya sido movido o eliminado.');
+        recentFiles = recentFiles.filter(f => f.path !== file.path);
+        localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
+        updateRecentFilesUI();
       }
-      
-      const iconSpan = document.createElement('span');
-      iconSpan.className = 'file-icon';
-      iconSpan.innerHTML = '<i data-lucide="file-edit"></i>';
-      li.appendChild(iconSpan);
-      
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'file-name';
-      nameSpan.textContent = file.name;
-      li.appendChild(nameSpan);
-      
-      if (openTab.isDirty) {
-        const dirtyDot = document.createElement('span');
-        dirtyDot.className = 'tab-dirty-indicator';
-        li.appendChild(dirtyDot);
-      }
-      
-      const closeBtn = document.createElement('button');
-      closeBtn.className = 'recent-file-close-btn';
-      closeBtn.innerHTML = '<i data-lucide="x"></i>';
-      closeBtn.title = 'Cerrar archivo';
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeTab(openTab.id);
-      });
-      li.appendChild(closeBtn);
-      
-      li.addEventListener('click', () => switchTab(openTab.id));
-    } else {
-      const iconSpan = document.createElement('span');
-      iconSpan.className = 'file-icon';
-      iconSpan.innerHTML = '<i data-lucide="file"></i>';
-      li.appendChild(iconSpan);
-      
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'file-name';
-      nameSpan.textContent = file.name;
-      li.appendChild(nameSpan);
-      
-      li.addEventListener('click', async () => {
-        try {
-          const content = await invoke('read_file', { path: file.path });
-          loadFileData({ path: file.path, name: file.name, content });
-        } catch (error) {
-          alert('No se pudo abrir el archivo de la lista de recientes. Es posible que haya sido movido o eliminado.');
-          recentFiles = recentFiles.filter(f => f.path !== file.path);
-          localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
-          updateRecentFilesUI();
-        }
-      });
-    }
+    });
 
     recentFilesList.appendChild(li);
   });
+
+  if (recentFiles.length === 0 && tabs.length === 0) {
+    recentFilesList.innerHTML = '<li class="empty-list">No hay archivos recientes</li>';
+  }
 
   if (window.lucide) {
     window.lucide.createIcons();
@@ -1327,17 +1296,17 @@ if (isTauri) {
     
     const paths = event.payload.paths;
     if (paths && paths.length > 0) {
-      const filePath = paths[0];
-      const ext = filePath.split('.').pop().toLowerCase();
-      
-      if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
-        try {
-          const content = await invoke('read_file', { path: filePath });
-          const separator = filePath.includes('\\') ? '\\' : '/';
-          const name = filePath.split(separator).pop();
-          loadFileData({ path: filePath, name, content });
-        } catch (error) {
-          alert('Error al abrir el archivo arrastrado: ' + error);
+      for (const filePath of paths) {
+        const ext = filePath.split('.').pop().toLowerCase();
+        if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
+          try {
+            const content = await invoke('read_file', { path: filePath });
+            const separator = filePath.includes('\\') ? '\\' : '/';
+            const name = filePath.split(separator).pop();
+            loadFileData({ path: filePath, name, content });
+          } catch (error) {
+            console.error('Error al abrir el archivo arrastrado: ' + error);
+          }
         }
       }
     }
@@ -1368,8 +1337,8 @@ if (isTauri) {
       }
     }, 250);
 
-    const file = e.dataTransfer.files[0];
-    if (file) {
+    const files = Array.from(e.dataTransfer.files);
+    files.forEach(file => {
       const ext = file.name.split('.').pop().toLowerCase();
       if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
         const reader = new FileReader();
@@ -1382,7 +1351,7 @@ if (isTauri) {
         };
         reader.readAsText(file);
       }
-    }
+    });
   });
 }
 
