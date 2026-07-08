@@ -21,6 +21,18 @@ LiteMD is a lightweight, high-performance desktop Markdown editor and reader des
 
 ---
 
+## Installation (Windows SmartScreen Notice)
+
+LiteMD is published as an unsigned executable to remain 100% free and open-source. Because buying digital code signing certificates costs hundreds of dollars annually, web browsers and Windows Defender SmartScreen might flag the installer as "unknown" or "unsafe" upon downloading.
+
+**To install and run LiteMD safely:**
+- **On Web Browsers (Chrome/Edge):** Click on the download options menu and select **Keep** -> **Keep anyway**.
+- **On Windows Defender:** Click **More info** (Más información) on the warning popup, then click **Run anyway** (Ejecutar de todas formas).
+
+Once the application gains usage reputation, these safety flags will disappear automatically.
+
+---
+
 ## Technology Stack
 
 - **Backend / Core**: [Rust](https://www.rust-lang.org/) & [Tauri v2](https://v2.tauri.app/) (native filesystem operations, Win32 window APIs, security boundaries, and command-line arguments injection).
